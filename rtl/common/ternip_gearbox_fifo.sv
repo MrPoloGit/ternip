@@ -39,7 +39,8 @@
 
 module ternip_gearbox_fifo #(
     parameter int InDataWidth = 8,
-    parameter int OutDataWidth = 8
+    parameter int OutDataWidth = 8,
+    parameter int StagingDepthMultiplier = 1
 ) (
     input  logic                    clk_i,
     input  logic                    rst_ni,
@@ -107,7 +108,7 @@ end else begin : non_multiple
     localparam int UnitWidth            = gcd(InDataWidth, OutDataWidth);
     localparam int UnitsPerInputWord    = InDataWidth/UnitWidth;
     localparam int UnitsPerOutputWord   = OutDataWidth/UnitWidth;
-    localparam int StagingCapacityUnits = UnitsPerInputWord + UnitsPerOutputWord;
+    localparam int StagingCapacityUnits = StagingDepthMultiplier*(UnitsPerInputWord + UnitsPerOutputWord);
     localparam int StagingWidth         = StagingCapacityUnits*UnitWidth;
     localparam int StagingSizeWidth     = `SAFE_CLOG2(StagingCapacityUnits+1);
 
